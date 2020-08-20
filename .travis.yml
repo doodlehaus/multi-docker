@@ -14,7 +14,7 @@ after_success:
   - docker build -t doodlehaus/multi-server ./server
   - docker build -t doodlehaus/multi-worker ./worker
   # Log into docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin docker.io
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push doodlehaus/mult-client:latest
   - docker push doodlehaus/mult-nginx:latest
   - docker push doodlehaus/mult-server:latest
