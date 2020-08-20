@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t doodlehaus/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true doodlehaus/react-test npm test
+
+after_success:
+  - docker build -t doodlehaus/multi-client ./client
+  - docker build -t doodlehaus/multi-nginx ./nginx
+  - docker build -t doodlehaus/multi-server ./server
+  - docker build -t doodlehaus/multi-worker ./worker
+  # Log into docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push doodlehaus/mult-client
+  - docker push doodlehaus/mult-nginx
+  - docker push doodlehaus/mult-server
+  - docker push doodlehaus/mult-worker
